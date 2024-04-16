@@ -14,20 +14,26 @@ load_dotenv()
 sheet_id = os.getenv('SHEET_ID')
 
 
-scope = ['https://www.googleapis.com/auth/spreadsheets']
+def list_of_emails():
+    '''function to return list of emails'''
+    scope = ['https://www.googleapis.com/auth/spreadsheets']
 
-creds = Credentials.from_service_account_file('credentials.json', scopes=scope)
+    creds = Credentials.from_service_account_file(
+        'credentials.json', scopes=scope)
 
-client = gspread.authorize(creds)
+    client = gspread.authorize(creds)
+
+    sheet = client.open_by_key(sheet_id)
+
+    print('')
+    print(sheet.title)
+
+    email_list = sheet.sheet1.col_values(3)
+    print(email_list)
 
 
-sheet = client.open_by_key(sheet_id)
-
-print('')
-print(sheet.title)
-
-email_list = sheet.sheet1.col_values(3)
-print(email_list)
+if __name__ == '__main__':
+    list_of_emails()
 
 
 # count repeated email addresses
